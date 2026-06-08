@@ -1,54 +1,64 @@
 # Landesfamilienpass BW Navigator
 
-## 🎯 Overview
+## Overview
 
-**Landesfamilienpass BW Navigator** is a private, non-commercial CivicTech prototype designed to help families in Baden-Württemberg use the **Landesfamilienpass** more practically.
+**Landesfamilienpass BW Navigator** is a private, non-commercial CivicTech prototype that helps families in Baden-Wuerttemberg use the **Landesfamilienpass** in a more practical and understandable way.
 
-The application is not an official government service and does not process applications for the Landesfamilienpass. Instead, it acts as an orientation and planning tool: families can browse eligible places, filter destinations, track visited locations, manage the six flexible museum coupons, and plan trips based on weather, distance, and suitability for children or teenagers.
+The application does not process applications, verify eligibility, or replace any official decision by a city, municipality, or public authority. It is an orientation and planning tool: families can browse destinations, understand coupon conditions, mark visited places, track flexible museum coupons, and plan trips based on weather, distance, and family suitability.
 
-The project was built as a practical UX prototype for families who receive the Landesfamilienpass but still need a simple way to understand: **where they can go, what type of coupon applies, what is still unused, and which destinations are realistic for a family trip.**
+The core product question is:
 
-## 🧭 Product Concept
+> How can a paper-based public benefit become easier to understand and use for real families without collecting personal data?
 
-Many public benefit programs are administratively clear, but difficult for families to use in everyday life. Information is spread across PDF lists, official pages, provider websites, and paper coupons. This prototype translates that information into a more usable digital interface.
+## Kurzbeschreibung fuer Verwaltung / Rathaus
+
+Der **Landesfamilienpass BW Navigator** ist ein privater, nicht-kommerzieller Prototyp zur besseren Orientierung von Familien bei der Nutzung des Landesfamilienpasses Baden-Wuerttemberg.
+
+Er zeigt moegliche Ausflugsziele, Couponarten, lokale Markierungen und einfache Planungshilfen. Die Anwendung ist kein offizielles Angebot einer Stadt oder Gemeinde, ersetzt keine Beratung und trifft keine rechtsverbindliche Entscheidung. Persoenliche Eingaben wie Notizen, besuchte Orte oder verwendete Coupons werden nur lokal im Browser gespeichert.
+
+Der Prototyp kann als Diskussionsgrundlage fuer nutzerfreundlichere kommunale Informationsangebote, Familienunterstuetzung oder digitale Verwaltungsservices dienen.
+
+## Product Concept
+
+Many public-benefit programs are administratively clear but difficult for users to apply in everyday life. Information is often split across PDF lists, provider websites, official pages, paper coupons, and local instructions. This prototype converts that fragmented information into a simple user journey.
 
 The product focuses on four practical questions:
 
-1. **Which places can we visit with the Landesfamilienpass?**
-2. **Which entries are free and which require a special coupon or discount?**
-3. **Which coupons have we already used?**
-4. **What is suitable for our family, our location, the weather, and our children’s age?**
+1. Where can we go with the Landesfamilienpass?
+2. Which destinations are free, discounted, or connected to a specific coupon?
+3. Which coupons or visits have we already used?
+4. Which destinations are realistic for our family, our location, the weather, and the age of our children?
 
-The result is a lightweight, privacy-friendly tool that can be shown as a concept for a municipal information service, a family support initiative, or a portfolio project in public-sector digitalization.
+## Key Features
 
-## ✨ Key Features
+- Multilingual interface: Russian, German, and English UI support.
+- Destination catalog: museums, castles, monasteries, cultural sites, and family-friendly destinations in Baden-Wuerttemberg.
+- Smart filters: place type, coupon condition, usage status, bad-weather suitability, and suitability for teenagers.
+- Coupon tracking: local tracking of flexible museum coupons.
+- Visited-place tracking: mark destinations as used or unused.
+- Private notes: add notes per destination.
+- Trip ideas: grouped suggestions for easier day-trip and weekend planning.
+- Google Maps integration: direct navigation/search links for each destination.
+- Privacy-first design: no account, no backend, no external user database.
+- PWA-ready structure: manifest and app icon references for installable-app behavior.
 
-- **Multilingual UI:** Russian, German, and English interface support.
-- **Destination catalog:** Family-friendly overview of museums, castles, monasteries, parks, and cultural sites in Baden-Württemberg.
-- **Smart filters:** Filter by type, coupon condition, usage status, bad-weather suitability, and teen suitability.
-- **Coupon tracking:** Track usage of the six flexible museum coupons locally.
-- **Visited-place tracking:** Mark places as used or unused.
-- **Personal notes:** Add private notes per destination.
-- **Trip ideas:** Grouped destination ideas to support easier family planning.
-- **Google Maps links:** Direct navigation links for each destination.
-- **Privacy-first storage:** All personal usage data is stored only in the browser via `localStorage`.
-- **PWA-ready structure:** Includes manifest and app icon references for installable-app behavior.
+## Tech Stack
 
-## 🛠️ Tech Stack
+- Frontend: React, TypeScript, Vite
+- Styling: Tailwind CSS utility classes
+- Icons: Lucide React
+- State management: custom React hook with local persistence
+- Persistence: browser localStorage
+- Build tooling: Vite, TypeScript, ESBuild
+- Deployment model: static frontend suitable for GitHub Pages, Vercel, Netlify, or municipal web hosting
 
-- **Frontend:** React, TypeScript, Vite
-- **Styling:** Tailwind CSS utility classes
-- **Icons:** Lucide React
-- **State Management:** Lightweight custom React hook with local persistence
-- **Persistence:** Browser `localStorage`
-- **Build Tooling:** Vite, TypeScript, ESBuild
-- **Deployment-ready:** Static frontend architecture suitable for GitHub Pages, Vercel, Netlify, or municipal web hosting
+## Technical Architecture
 
-## ⚙️ Technical Overview
+The application is intentionally lightweight. It does not require authentication, a backend database, server-side sessions, or external personal-data storage.
 
-The application is intentionally lightweight. It does not require user accounts, a backend database, server-side sessions, or external personal data storage.
+### Application State
 
-Application state is handled through a custom store hook:
+User-specific state is handled through a custom store hook:
 
 ```ts
 const INITIAL_STATE: UserState = {
@@ -65,11 +75,21 @@ The state is persisted locally:
 localStorage.setItem('lfp-state', JSON.stringify(state));
 ```
 
-This means that marked places, coupon usage, notes, and language preference remain available on the same device/browser, but are not sent to any external server.
+This means that marked visits, coupon usage, notes, and language preference remain available on the same device/browser, but are not transmitted to any external server.
 
-## 🗂️ Data Model
+### Main UI Flow
 
-The destination catalog is based on a typed `Place[]` structure. Each destination includes:
+The application is organized around three main tabs:
+
+- Catalog: searchable and filterable destination list.
+- Free Coupons: local tracking of flexible museum coupons.
+- Trip Ideas: grouped suggestions for easier family planning.
+
+Filtering and sorting are applied client-side through memoized React state transformations. The current data model keeps the prototype transparent and easy to review.
+
+## Data Model
+
+The destination catalog is based on a typed `Place[]` structure. Each destination can include:
 
 - unique ID
 - name and city
@@ -77,39 +97,50 @@ The destination catalog is based on a typed `Place[]` structure. Each destinatio
 - short description
 - coupon type and coupon information
 - estimated distance and travel time
-- indoor/outdoor/weather suitability
+- indoor / outdoor / mixed-weather suitability
 - suitability for teenagers
-- photo reference
+- local photo reference
 - website link
 - Google Maps link
 
-This structure makes the application easy to extend: new places can be added directly to the data file without changing the UI logic.
+This structure makes the application easy to extend: new places can be added to the data file without changing the main UI logic.
 
-## 🔐 Privacy & Data Protection
+## Privacy and Data Protection
 
-This prototype is designed to be privacy-friendly by default.
+This prototype follows a privacy-by-design approach:
 
 - No login is required.
 - No personal data is transmitted to a city, municipality, or external database.
-- Notes, marked visits, and coupon history are stored only in the browser of the user’s device.
+- Notes, marked visits, and coupon history are stored only in the browser of the user's device.
 - The project does not implement analytics, tracking, or server-side profiling.
 - Clearing the browser storage also clears the locally saved app data.
 
-This makes the project suitable as a low-risk prototype for public-sector discussion, family support, or digital service design.
+## Administrative Disclaimer
 
-## 🏛️ Administrative Disclaimer
+This application is a private, non-commercial prototype and an orientation aid for families.
 
-This application is a **private, non-commercial prototype** and an orientation aid for families.
-
-It is **not** an official service of the State of Baden-Württemberg, a city, a municipality, or any public authority. It does not replace official advice, legal assessment, or the formal application process.
+It is not an official service of the State of Baden-Wuerttemberg, a city, a municipality, or any public authority. It does not replace official advice, legal assessment, or the formal application process.
 
 The application for the Landesfamilienpass, the verification of eligibility, and the decision on issuance remain exclusively within the responsibility of the competent city or municipal administration.
 
 Information on opening hours, admission conditions, coupon rules, and participating institutions should always be checked directly with the respective provider or the official public authority before a visit.
 
-**Source status:** June 2026. Information provided without warranty.
+Source status: June 2026. Information provided without warranty.
 
-## 🚀 Quick Start
+## Professional Relevance
+
+This repository demonstrates the ability to:
+
+- translate a real administrative and family-support problem into a digital product concept;
+- design a privacy-friendly workflow without unnecessary data collection;
+- structure multilingual UI logic for a heterogeneous user group;
+- model domain data in a typed, maintainable format;
+- build a deployable React/TypeScript prototype suitable for stakeholder review;
+- communicate limitations, administrative boundaries, and improvement paths clearly.
+
+The project is relevant for roles in AI automation, public-sector digitalization, UX prototyping, process optimization, civic technology, and user-centered service design.
+
+## Quick Start
 
 ### Prerequisites
 
@@ -142,22 +173,24 @@ npm run build
 npm run lint
 ```
 
-## 📌 Possible Next Improvements
+## Possible Next Improvements
 
 - Add a German-first onboarding screen for municipal presentation.
 - Add official source links per destination.
-- Add optional export/print view for families.
-- Add accessibility pass according to WCAG basics.
-- Add a dedicated “For municipalities” information page.
-- Replace static distance values with dynamic user-location-based routing.
+- Add a print/export view for families and municipal consultation desks.
+- Add accessibility review according to WCAG basics.
+- Add a dedicated "For municipalities" information page.
+- Replace static distance values with optional user-location-based routing.
 - Add a versioned data-source file for easier administrative review.
+- Add source references and update dates per destination.
+- Add a data-maintenance workflow for annual Landesfamilienpass updates.
 
-## 👩‍💻 Author
+## Author
 
 Created by **Tetiana Nalotova** as a CivicTech and public-service UX prototype focused on family support, digital orientation, and practical use of public benefits.
 
 Professional focus: AI automation, process optimization, user-centered digital tools, and workflow design for small organizations and public-facing services.
 
-## 📜 License
+## License
 
 Private prototype / portfolio project. Reuse, publication, or official deployment requires explicit permission from the author.
