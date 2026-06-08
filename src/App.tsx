@@ -7,6 +7,7 @@ import { FiltersPanel } from './components/FiltersPanel';
 import { CouponsTab } from './components/CouponsTab';
 import { IdeasTab } from './components/IdeasTab';
 import { Place } from './types';
+import { Footer } from './components/Footer';
 import { 
   PLACE_TRANSLATIONS, 
   UI_TRANSLATIONS,
@@ -299,6 +300,8 @@ export default function App() {
           />
         )}
       </main>
+
+      <Footer lang={lang} />
 
       {/* Sights Detail Modal */}
       {selectedPlace && (
